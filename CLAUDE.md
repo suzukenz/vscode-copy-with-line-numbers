@@ -15,27 +15,61 @@
 
 ```
 .
-├── .vscode/           # VSCode設定（デバッグ、タスク）
-├── src/               # TypeScriptソースコード
-│   ├── extension.ts   # メインエントリーポイント
-│   └── test/          # テストファイル
+├── .vscode/                   # VSCode設定（デバッグ、タスク）
+├── src/
+│   ├── core/                  # コアビジネスロジック（VSCode API非依存）
+│   │   ├── types.ts           # 型定義
+│   │   ├── errors.ts          # エラークラス定義
+│   │   ├── formatter.ts       # テキストフォーマッター（純粋関数）
+│   │   └── copyWithLineNumbers.ts  # メイン実行関数
+│   ├── utils/
+│   │   └── editorUtils.ts     # VSCode API ラッパー関数
+│   ├── extension.ts           # エントリーポイント
+│   └── test/                  # テストファイル
 │       └── suite/
 │           ├── index.ts           # テストランナー
 │           └── extension.test.ts  # テストケース
-├── out/               # コンパイル済みJavaScript（自動生成）
-├── package.json       # プロジェクトメタデータと依存関係
-├── tsconfig.json      # TypeScript設定
-└── .vscode-test.js    # VSCode Test CLI設定
+├── out/                       # コンパイル済みJavaScript（自動生成）
+├── package.json               # プロジェクトメタデータと依存関係
+├── tsconfig.json              # TypeScript設定
+├── .vscode-test.js            # VSCode Test CLI設定
+└── CLAUDE.md                  # プロジェクト開発ガイドライン
 ```
 
 ## 開発ガイドライン
+
+### アーキテクチャ方針
+
+**関数ベース実装**
+
+- クラスは使用しない（エラークラスを除く）
+- すべてのロジックは純粋関数として実装
+- 副作用を持つ関数は明示的に分離
+
+**エラーハンドリング**
+
+- エラーは JavaScript 標準の Error クラスを継承したクラスベースで実装
+- 各エラータイプは専用のクラスとして定義（`EditorNotActiveError`, `NoSelectionError`など）
+- エラーの型チェックは `instanceof` を使用
+- エラークラスは以下のプロパティを持つ：
+  - `code`: エラーコード（文字列）
+  - `message`: 英語の内部メッセージ
+  - `userMessage`: 日本語のユーザー向けメッセージ
+- Union型でエラータイプを定義：`type CopyWithLineNumbersError = EditorNotActiveError | NoSelectionError | ...`
+
+**責務の分離**
+
+- `src/core/`: 純粋なビジネスロジック（VSCode API非依存）
+- `src/utils/`: VSCode APIとの対話を抽象化
+- `src/core/copyWithLineNumbers.ts`: メインの実行関数（パイプライン形式）
 
 ### コーディング規約
 
 - TypeScriptのstrict modeを有効化
 - 型安全性を最優先
-- すべての関数にJSDocコメントを記載
-- コマンド名は `vscode-copy-with-line-numbers.{commandName}` の形式
+- すべてのexported関数にTSDocコメントを記載
+- クラスは使用しない（エラークラスのみ例外）
+- 関数は単一責任の原則に従う
 
 ### テスト方針
 
@@ -65,17 +99,8 @@ npm test
 2. 新しいVSCodeウィンドウ（Extension Development Host）が開く
 3. 拡張機能の動作を確認
 
-### 公開前チェックリスト
+### 実装後チェックリスト
 
 - [ ] すべてのテストが成功
 - [ ] TypeScriptコンパイルエラーなし
-- [ ] package.jsonのversion、displayName、descriptionが適切
-- [ ] README.mdに使用方法を記載
-- [ ] LICENSEファイルを追加
-
-## Claude Code使用時の注意事項
-
-- Ad-hoc修正の禁止：根本的な解決策を実装してください
-- 暗黙的なfallbackの禁止：エラーハンドリングは明示的に
-- 型安全性の維持：anyの使用は最小限に
-- コメントは必須：プロジェクトに不慣れな人でも理解できるように
+- [ ] README.mdの更新（必要に応じて）

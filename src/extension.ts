@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { executeCopyWithLineNumbers } from './core/copyWithLineNumbers';
 
 /**
  * This method is called when the extension is activated.
@@ -7,12 +8,10 @@ import * as vscode from 'vscode';
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Extension "vscode-copy-with-line-numbers" is now active!');
 
-	// Register the copyWithLineNumbers command
+	// Register the copyWithLineNumbers command with a pure function
 	const disposable = vscode.commands.registerCommand(
 		'vscode-copy-with-line-numbers.copyWithLineNumbers',
-		() => {
-			vscode.window.showInformationMessage('Copy with Line Numbers command executed!');
-		}
+		executeCopyWithLineNumbers
 	);
 
 	context.subscriptions.push(disposable);
