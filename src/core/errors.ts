@@ -9,7 +9,7 @@
  */
 export class EditorNotActiveError extends Error {
 	readonly code = 'EDITOR_NOT_ACTIVE';
-	readonly userMessage = 'アクティブなエディターがありません。ファイルを開いてから再度実行してください。';
+	readonly userMessage = 'No active editor. Please open a file and try again.';
 
 	constructor() {
 		super('No active text editor');
@@ -27,7 +27,7 @@ export class EditorNotActiveError extends Error {
  */
 export class NoSelectionError extends Error {
 	readonly code = 'NO_SELECTION';
-	readonly userMessage = 'テキストが選択されていません。コピーするテキストを選択してください。';
+	readonly userMessage = 'No text selected. Please select text to copy.';
 
 	constructor() {
 		super('No text selected');
@@ -51,7 +51,7 @@ export class InvalidInputError extends Error {
 		super(`Invalid input: ${details}`);
 		this.name = 'InvalidInputError';
 		this.details = details;
-		this.userMessage = `入力エラー: ${details}`;
+		this.userMessage = `Input error: ${details}`;
 		if (Error.captureStackTrace) {
 			Error.captureStackTrace(this, InvalidInputError);
 		}
@@ -71,7 +71,7 @@ export class InvalidLineNumberError extends Error {
 		super(`Invalid line number: ${lineNumber}`);
 		this.name = 'InvalidLineNumberError';
 		this.lineNumber = lineNumber;
-		this.userMessage = `行番号が不正です: ${lineNumber}。行番号は1以上の整数である必要があります。`;
+		this.userMessage = `Invalid line number: ${lineNumber}. Line number must be a positive integer (1 or greater).`;
 		if (Error.captureStackTrace) {
 			Error.captureStackTrace(this, InvalidLineNumberError);
 		}

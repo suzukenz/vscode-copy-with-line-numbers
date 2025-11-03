@@ -80,8 +80,8 @@ export const copyToClipboard = async (text: string): Promise<void> => {
  */
 export const showSuccessMessage = (lineCount: number): void => {
 	const message = lineCount === 1
-		? '1行を行番号付きでコピーしました。'
-		: `${lineCount}行を行番号付きでコピーしました。`;
+		? 'Copied 1 line with line numbers.'
+		: `Copied ${lineCount} lines with line numbers.`;
 
 	vscode.window.showInformationMessage(message);
 };
@@ -101,6 +101,6 @@ export const showErrorMessage = (error: CopyWithLineNumbersError): void => {
  * @param error - The unexpected error that occurred
  */
 export const showUnexpectedErrorMessage = (error: Error): void => {
-	const message = `予期しないエラーが発生しました: ${error.message}`;
+	const message = `An unexpected error occurred: ${error.message}`;
 	vscode.window.showErrorMessage(message);
 };
