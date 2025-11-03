@@ -63,11 +63,12 @@ export const executeCopyWithLineNumbers = async (): Promise<void> => {
 		}
 		const selection = selectionResult;
 
-		// Step 3: Format the selected text with line numbers
+		// Step 3: Format the selected text with line numbers and file path
 		const formattedText = formatSelectionWithLineNumbers(
 			selection.selectedText,
 			selection.startLine,
-			selection.endLine
+			selection.endLine,
+			selection.filePath
 		);
 
 		// Step 4: Copy the formatted text to clipboard

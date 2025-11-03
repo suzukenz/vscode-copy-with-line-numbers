@@ -17,10 +17,12 @@ const DEFAULT_SEPARATOR = ': ';
  *
  * This is a pure function that takes text and formatting options,
  * and returns the formatted text with line numbers.
+ * If filePath is provided in options, a header line with the file path
+ * will be prepended to the output.
  *
  * @param text - The text to format (can be multi-line)
- * @param options - Formatting options including starting line number
- * @returns The formatted text with line numbers
+ * @param options - Formatting options including starting line number and optional file path
+ * @returns The formatted text with line numbers (and optional header line)
  * @throws {InvalidInputError} If the text is empty or undefined
  * @throws {InvalidLineNumberError} If the starting line number is invalid
  *
@@ -28,6 +30,9 @@ const DEFAULT_SEPARATOR = ': ';
  * ```typescript
  * const result = formatWithLineNumbers("hello\nworld", { startLineNumber: 1 });
  * // Returns: "1: hello\n2: world"
+ *
+ * const result = formatWithLineNumbers("hello", { startLineNumber: 1, filePath: "/path/to/file.js" });
+ * // Returns: "// /path/to/file.js\n1: hello"
  * ```
  */
 export function formatWithLineNumbers(
@@ -60,6 +65,12 @@ export function formatWithLineNumbers(
 		return `${lineNumber}${separator}${line}`;
 	});
 
+	// If filePath is provided, prepend a header line with the file path
+	if (options.filePath) {
+		const headerLine = `// ${options.filePath}`;
+		return `${headerLine}\n${formattedLines.join('\n')}`;
+	}
+
 	// Join lines back together
 	return formattedLines.join('\n');
 }
@@ -69,11 +80,13 @@ export function formatWithLineNumbers(
  *
  * This is a convenience function that automatically calculates the starting
  * line number from the selection's start line (converting from 0-based to 1-based).
+ * If filePath is provided, a header line with the file path will be prepended to the output.
  *
  * @param text - The selected text to format
  * @param startLine - The starting line of the selection (0-based index)
  * @param endLine - The ending line of the selection (0-based index)
- * @returns The formatted text with line numbers
+ * @param filePath - Optional file path to include in the header line
+ * @returns The formatted text with line numbers (and optional header line)
  * @throws {InvalidInputError} If the text is empty or undefined
  * @throws {InvalidLineNumberError} If line numbers are invalid
  *
@@ -84,12 +97,16 @@ export function formatWithLineNumbers(
  *
  * const result = formatSelectionWithLineNumbers("line1\nline2", 10, 11);
  * // Returns: "11: line1\n12: line2"
+ *
+ * const result = formatSelectionWithLineNumbers("hello", 0, 0, "/path/to/file.js");
+ * // Returns: "// /path/to/file.js\n1: hello"
  * ```
  */
 export function formatSelectionWithLineNumbers(
 	text: string,
 	startLine: number,
-	endLine: number
+	endLine: number,
+	filePath?: string
 ): string {
 	// Validate that startLine is not negative
 	if (startLine < 0) {
@@ -102,7 +119,8 @@ export function formatSelectionWithLineNumbers(
 	// Use the main formatting function
 	return formatWithLineNumbers(text, {
 		startLineNumber: displayLineNumber,
-		separator: DEFAULT_SEPARATOR
+		separator: DEFAULT_SEPARATOR,
+		filePath: filePath
 	});
 }
 

@@ -51,13 +51,21 @@ export const getSelection = (
 	// Get the selected text
 	const selectedText = editor.document.getText(selection);
 
+	// Get the file path from the document URI
+	// For untitled files, extract the name from the path (e.g., "/Untitled-1" -> "Untitled-1")
+	// For regular files, use the full file system path
+	const filePath = editor.document.uri.scheme === 'untitled'
+		? editor.document.uri.path.split('/').pop() || editor.document.uri.path
+		: editor.document.uri.fsPath;
+
 	// Extract selection information
 	const editorSelection: EditorSelection = {
 		startLine: selection.start.line,
 		startCharacter: selection.start.character,
 		endLine: selection.end.line,
 		endCharacter: selection.end.character,
-		selectedText: selectedText
+		selectedText: selectedText,
+		filePath: filePath
 	};
 
 	return editorSelection;

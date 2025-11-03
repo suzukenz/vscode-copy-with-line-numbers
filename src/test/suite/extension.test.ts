@@ -68,7 +68,10 @@ line 3`;
 
 		// クリップボードの内容を確認
 		const clipboardContent = await vscode.env.clipboard.readText();
-		assert.strictEqual(clipboardContent, '2: line 1');
+		// ヘッダー行にファイルパスを含む形式に変更
+		const expectedHeader = `// ${document.uri.fsPath}`;
+		const expected = `${expectedHeader}\n2: line 1`;
+		assert.strictEqual(clipboardContent, expected);
 	});
 
 	test('Should copy multiple lines with line numbers', async () => {
@@ -85,7 +88,10 @@ line 3`;
 
 		// クリップボードの内容を確認
 		const clipboardContent = await vscode.env.clipboard.readText();
-		const expected = `1: /// <summary>
+		// ヘッダー行にファイルパスを含む形式に変更
+		const expectedHeader = `// ${document.uri.fsPath}`;
+		const expected = `${expectedHeader}
+1: /// <summary>
 2: /// Initializes a new instance of the <see cref="VSPackage"/> class.
 3: /// </summary>`;
 		assert.strictEqual(clipboardContent, expected);
@@ -113,7 +119,10 @@ line 3`;
 
 		// クリップボードの内容を確認
 		const clipboardContent = await vscode.env.clipboard.readText();
-		const expected = `51: /// <summary>
+		// ヘッダー行にファイルパスを含む形式に変更
+		const expectedHeader = `// ${document.uri.fsPath}`;
+		const expected = `${expectedHeader}
+51: /// <summary>
 52: /// Initializes a new instance of the <see cref="VSPackage"/> class.
 53: /// </summary>`;
 		assert.strictEqual(clipboardContent, expected);
@@ -133,7 +142,10 @@ line 3`;
 
 		// クリップボードの内容を確認
 		const clipboardContent = await vscode.env.clipboard.readText();
-		const expected = `1: line 1
+		// ヘッダー行にファイルパスを含む形式に変更
+		const expectedHeader = `// ${document.uri.fsPath}`;
+		const expected = `${expectedHeader}
+1: line 1
 2:
 3: line 3`;
 		assert.strictEqual(clipboardContent, expected);
@@ -151,7 +163,10 @@ line 3`;
 
 		// クリップボードの内容を確認（選択部分のみがコピーされる）
 		const clipboardContent = await vscode.env.clipboard.readText();
-		assert.strictEqual(clipboardContent, '1: hello');
+		// ヘッダー行にファイルパスを含む形式に変更
+		const expectedHeader = `// ${document.uri.fsPath}`;
+		const expected = `${expectedHeader}\n1: hello`;
+		assert.strictEqual(clipboardContent, expected);
 	});
 
 	test('Should handle code with indentation', async () => {
@@ -169,7 +184,10 @@ line 3`;
 
 		// クリップボードの内容を確認（インデントが保持される）
 		const clipboardContent = await vscode.env.clipboard.readText();
-		const expected = `1: function test() {
+		// ヘッダー行にファイルパスを含む形式に変更
+		const expectedHeader = `// ${document.uri.fsPath}`;
+		const expected = `${expectedHeader}
+1: function test() {
 2:     const x = 1;
 3:     return x;
 4: }`;

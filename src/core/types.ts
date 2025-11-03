@@ -22,6 +22,9 @@ export interface EditorSelection {
 
 	/** The actual text content that was selected */
 	selectedText: string;
+
+	/** The file path of the document containing the selection */
+	filePath: string;
 }
 
 /**
@@ -33,6 +36,9 @@ export interface FormatOptions {
 
 	/** The separator between line number and text content (default: ": ") */
 	separator?: string;
+
+	/** The file path to include in the header line (optional) */
+	filePath?: string;
 }
 
 /**
