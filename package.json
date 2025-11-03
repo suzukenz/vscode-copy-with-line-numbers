@@ -4,6 +4,11 @@
   "description": "VSCode extension to copy code with line numbers",
   "version": "0.0.1",
   "publisher": "suzukenz",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/suzukenz/vscode-copy-with-line-numbers.git"
+  },
   "engines": {
     "vscode": "^1.85.0"
   },
