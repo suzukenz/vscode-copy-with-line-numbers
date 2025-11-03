@@ -1,6 +1,6 @@
 {
   "name": "vscode-copy-with-line-numbers",
-  "displayName": "Copy with Line Numbers",
+  "displayName": "Copy Selection with Line Numbers",
   "description": "VSCode extension to copy code with line numbers",
   "version": "0.0.1",
   "publisher": "suzukenz",
@@ -21,7 +21,7 @@
     "commands": [
       {
         "command": "vscode-copy-with-line-numbers.copyWithLineNumbers",
-        "title": "Copy with Line Numbers",
+        "title": "Copy Selection with Line Numbers",
         "category": "Copy"
       }
     ]

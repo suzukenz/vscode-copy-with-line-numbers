@@ -50,7 +50,7 @@ suite('Extension Test Suite', () => {
 	});
 });
 
-suite('Copy with Line Numbers - Functionality', () => {
+suite('Copy Selection with Line Numbers - Functionality', () => {
 
 	test('Should copy single line with line number', async () => {
 		// テスト用のコードを作成（行番号は0始まり、表示は1始まり）

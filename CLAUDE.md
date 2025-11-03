@@ -1,4 +1,4 @@
-# VSCode Copy with Line Numbers Extension
+# VSCode Copy Selection with Line Numbers Extension
 
 ## プロジェクト概要
 

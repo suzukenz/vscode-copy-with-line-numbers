@@ -1,5 +1,5 @@
 /**
- * Main execution logic for the Copy with Line Numbers command.
+ * Main execution logic for the Copy Selection with Line Numbers command.
  * Implements a functional pipeline approach without classes.
  */
 
