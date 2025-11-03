@@ -1,0 +1,39 @@
+{
+  "name": "vscode-copy-with-line-numbers",
+  "displayName": "Copy with Line Numbers",
+  "description": "VSCode extension to copy code with line numbers",
+  "version": "0.0.1",
+  "publisher": "suzukenz",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vscode-copy-with-line-numbers.copyWithLineNumbers",
+        "title": "Copy with Line Numbers",
+        "category": "Copy"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "20.x",
+    "@types/mocha": "^10.0.6",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.3.8",
+    "typescript": "^5.3.3"
+  }
+}
