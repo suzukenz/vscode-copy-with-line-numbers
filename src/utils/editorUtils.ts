@@ -53,10 +53,22 @@ export const getSelection = (
 
 	// Get the file path from the document URI
 	// For untitled files, extract the name from the path (e.g., "/Untitled-1" -> "Untitled-1")
-	// For regular files, use the full file system path
-	const filePath = editor.document.uri.scheme === 'untitled'
-		? editor.document.uri.path.split('/').pop() || editor.document.uri.path
-		: editor.document.uri.fsPath;
+	// For regular files, use the workspace-relative path if possible, otherwise use the full path
+	let filePath: string;
+	if (editor.document.uri.scheme === 'untitled') {
+		// Untitled files: extract just the name
+		filePath = editor.document.uri.path.split('/').pop() || editor.document.uri.path;
+	} else {
+		// Regular files: try to get workspace-relative path
+		const workspaceFolder = vscode.workspace.getWorkspaceFolder(editor.document.uri);
+		if (workspaceFolder) {
+			// Get relative path from workspace root
+			filePath = vscode.workspace.asRelativePath(editor.document.uri, false);
+		} else {
+			// No workspace: use full path
+			filePath = editor.document.uri.fsPath;
+		}
+	}
 
 	// Extract selection information
 	const editorSelection: EditorSelection = {
